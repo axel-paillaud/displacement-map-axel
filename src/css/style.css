@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+.main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scene {
+  aspect-ratio: 7/9;
+  width: 30%;
+}
+
+.scene-container {
+  width: 100%;
+  height: 100%;
+}
+
+#canvas {
+  display: block;
+}
