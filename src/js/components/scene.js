@@ -1,8 +1,14 @@
 import { Renderer, Camera, Transform, Box, Program, Mesh } from 'ogl';
+import GUI from 'lil-gui'
 import vertex from '../glsl/main.vert';
 import fragment from '../glsl/main.frag';
 
 {
+    // GUI bar slider
+    const gui = new GUI();
+    gui.add({offset: 1}, 'offset', 0, 1);
+
+
     const canvasEl = document.getElementById('canvas');
     const sceneEl = document.querySelector('.scene');
     const renderer = new Renderer({dpr: Math.min(window.devicePixelRatio, 2), canvas: canvasEl});
