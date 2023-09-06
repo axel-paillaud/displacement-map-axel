@@ -1,4 +1,6 @@
 import { Renderer, Camera, Transform, Box, Program, Mesh } from 'ogl';
+import vertex from '../glsl/main.vert';
+import fragment from '../glsl/main.frag';
 
 {
     const canvasEl = document.getElementById('canvas');
@@ -24,21 +26,8 @@ import { Renderer, Camera, Transform, Box, Program, Mesh } from 'ogl';
     const geometry = new Box(gl);
 
     const program = new Program(gl, {
-        vertex: /* glsl */ `
-            attribute vec3 position;
-
-            uniform mat4 modelViewMatrix;
-            uniform mat4 projectionMatrix;
-
-            void main() {
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-        `,
-        fragment: /* glsl */ `
-            void main() {
-                gl_FragColor = vec4(1.0);
-            }
-        `,
+        vertex: vertex, 
+        fragment: fragment,
     });
 
     const mesh = new Mesh(gl, { geometry, program });
