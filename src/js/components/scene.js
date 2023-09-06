@@ -3,48 +3,70 @@ import GUI from 'lil-gui'
 import vertex from '../glsl/main.vert';
 import fragment from '../glsl/main.frag';
 
-{
+class Scene {
+    mesh;
+    renderer;
+    scene;
+    camera;
+
+    constructor() {
+        this.setGUI();
+        this.setScene();
+        this.events();
+        this.resize();
+    }
+
+
     // GUI bar slider
-    const gui = new GUI();
-    gui.add({offset: 1}, 'offset', 0, 1);
+    setGUI() {
+        const gui = new GUI();
+        gui.add({offset: 1}, 'offset', 0, 1);
+    }
 
+    setScene() {
 
-    const canvasEl = document.getElementById('canvas');
-    const sceneEl = document.querySelector('.scene');
-    const renderer = new Renderer({dpr: Math.min(window.devicePixelRatio, 2), canvas: canvasEl});
-    const gl = renderer.gl;
-    //gl.clearColor(1, 1, 1, 1)
+        const canvasEl = document.getElementById('canvas');
+        this.sceneEl = document.querySelector('.scene');
+        this.renderer = new Renderer({dpr: Math.min(window.devicePixelRatio, 2), canvas: canvasEl});
+        const gl = this.renderer.gl;
+        //gl.clearColor(1, 1, 1, 1)
 
-    const camera = new Camera(gl);
-    camera.position.z = 5;
+        this.camera = new Camera(this.gl);
+        this.camera.position.z = 5;
 
-    function resize() {
-        renderer.setSize(sceneEl.offsetWidth, sceneEl.offsetHeight);
-        camera.perspective({
-            aspect: gl.canvas.width / gl.canvas.height,
+        this.scene = new Transform();
+
+        const geometry = new Box(gl);
+
+        const program = new Program(gl, {
+            vertex: vertex, 
+            fragment: fragment,
+        });
+
+        this.mesh = new Mesh(gl, { geometry, program });
+        this.mesh.setParent(this.scene);
+
+    }
+
+    events() {
+        requestAnimationFrame(this.update);
+        window.addEventListener('resize', this.resize, false);
+    }
+
+    update = (t) => {
+        requestAnimationFrame(this.update);
+
+        this.mesh.rotation.y -= 0.04;
+        this.mesh.rotation.x += 0.03;
+        this.renderer.render({ scene: this.scene, camera: this.camera });
+    }
+
+    resize() {
+        this.renderer.setSize(this.sceneEl.offsetWidth, this.sceneEl.offsetHeight);
+        this.camera.perspective({
+            aspect: this.renderer.gl.canvas.width / this.renderer.gl.canvas.height,
         });
     }
-    window.addEventListener('resize', resize, false);
-    resize();
-
-    const scene = new Transform();
-
-    const geometry = new Box(gl);
-
-    const program = new Program(gl, {
-        vertex: vertex, 
-        fragment: fragment,
-    });
-
-    const mesh = new Mesh(gl, { geometry, program });
-    mesh.setParent(scene);
-
-    requestAnimationFrame(update);
-    function update(t) {
-        requestAnimationFrame(update);
-
-        mesh.rotation.y -= 0.04;
-        mesh.rotation.x += 0.03;
-        renderer.render({ scene, camera });
-    }
 }
+
+export default Scene;
