@@ -43,8 +43,8 @@ class Scene {
         ], gl);
         
         const program = new Program(gl, {
-            vertex: vertex, 
-            fragment: fragment,
+            vertex, 
+            fragment,
             uniforms: {
                 uTexture1: { value: LoaderManager.assets['img1'] },
             },
@@ -54,16 +54,16 @@ class Scene {
     }
 
     events() {
-        if(this.mesh) {
-            requestAnimationFrame(this.update);
-            window.addEventListener('resize', this.resize, false);
-        }
+        requestAnimationFrame(this.update);
+        window.addEventListener('resize', this.resize, false);
     }
 
     update = (t) => {
         requestAnimationFrame(this.update);
 
-        this.renderer.render({ scene: this.mesh });
+        if (this.mesh) {
+            this.renderer.render({ scene: this.mesh });
+        }
     }
 
     resize = () => {
