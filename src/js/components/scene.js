@@ -1,4 +1,5 @@
-import { Renderer, Camera, Transform, Triangle, Program, Mesh } from 'ogl';
+import { Renderer, Transform, Triangle, Program, Mesh } from 'ogl';
+import { getCoverUV } from '../utils/ogl.js'
 import LoaderManager from '../managers/LoaderManager.js';
 import GUI from 'lil-gui'
 import vertex from '../glsl/main.vert';
@@ -41,12 +42,16 @@ class Scene {
                 texture: './images/image-1.JPG',
             },
         ], gl);
+
+        const uvCover1 = getCoverUV(gl, LoaderManager.assets['img1'].image);
         
         const program = new Program(gl, {
             vertex, 
             fragment,
             uniforms: {
                 uTexture1: { value: LoaderManager.assets['img1'] },
+                uvRepeat1: { value: uvCover1.repeat},
+                uvOffset1: { value: uvCover1.offset},
             },
         });
 
