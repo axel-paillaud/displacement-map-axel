@@ -9,7 +9,7 @@ varying vec2 vUv;
 varying vec2 vUvMap1;
 varying vec2 vUvMap2;
 
-const float displacementCoef = 0.4;
+const float displacementCoef = 0.3;
 
 void main() {
   vec4 displacementTexture = texture2D(uDisplacementTexture, vUv);
