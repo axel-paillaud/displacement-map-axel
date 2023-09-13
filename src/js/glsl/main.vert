@@ -21,6 +21,7 @@ void main() {
     vUvMap1 += uvOffset1;
     vUvMap2 *= uvRepeat2;
     vUvMap2 += uvOffset2;
+    
     gl_Position = vec4(position, 0, 1);
 }
 
